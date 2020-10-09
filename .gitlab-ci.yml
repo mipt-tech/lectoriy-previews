@@ -4,6 +4,7 @@ pages:
   image: node:latest
   stage: deploy
   script:
+    - npm install
     - npm run build
   artifacts:
     paths:
