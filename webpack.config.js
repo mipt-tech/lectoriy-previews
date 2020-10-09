@@ -41,6 +41,7 @@ module.exports = {
       },
       {
         test: /(\.ttf|\.png|\.svg)$/,
+        exclude: /node_modules/,
         use: ['file-loader?name=[name].[ext]']
       }
     ]

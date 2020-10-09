@@ -4,8 +4,8 @@ import { Stage, Layer, Rect, Image } from 'react-konva'
 import { loadImage } from '../../../util/img'
 import { calculateLayout } from './layout'
 import settings from '../../../util/settings'
-import aside_transition_dark from './images/shadow.png'
-import aside_transition_bright from './images/bright.png'
+import asideTransitionDark from '../../../../assets/shadow.png'
+import asideTransitionBright from '../../../../assets/bright.png'
 
 import Subject from './Subject'
 import Number from './Number'
@@ -37,7 +37,7 @@ const Thumbnail = ({ scale }) => {
   const [aside_transition, setAsideTransition] = useState(null)
 
   useEffect(() => {
-    const aside_transition_src = year < 4 ? aside_transition_dark : aside_transition_bright
+    const aside_transition_src = year < 4 ? asideTransitionDark : asideTransitionBright
     loadImage(aside_transition_src).then(setAsideTransition)
   }, [year])
 
