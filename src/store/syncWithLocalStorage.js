@@ -1,6 +1,8 @@
 import { loadImage } from '../util/img'
 import { stateKeys } from './reducers'
 
+const PREFIX = 'previews__'
+
 export const saveToLocalStorage = store => (next, initialState) => action => {
   console.log(initialState)
   const prevState = store.getState()
@@ -24,7 +26,7 @@ export const saveToLocalStorage = store => (next, initialState) => action => {
         default:
           valueToSave = curValue
       }
-      localStorage[key] = valueToSave
+      localStorage[`${PREFIX}${key}`] = valueToSave
     }
   }
 }
@@ -33,7 +35,7 @@ export const loadFromLocalStorage = async () => {
   const persistedState = {}
   for (let i = 0; i < stateKeys.length; i++) {
     const key = stateKeys[i]
-    const persistedValue = localStorage[key]
+    const persistedValue = localStorage[`${PREFIX}${key}`]
     if (persistedValue == null) continue
     switch (key) {
       case 'year':
