@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url(../IBMPlexSans-Bold.ttf);
+}
+
+.container {
+  padding-top: 20px;
+  display: flex;
+  margin: 0 auto;
+  width: 960px;
+}

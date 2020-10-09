@@ -1,0 +1,7 @@
+.finisher {
+  opacity: 0;
+}
+
+.finisher:hover {
+  opacity: .5;
+}

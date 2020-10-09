@@ -1,0 +1,9 @@
+.mask {
+  background: rgba(255, 255, 255, .9);
+  margin: 8px 0 0 8px;
+  padding: 8px 0 0 8px;
+}
+
+.maskRow {
+  align-items: center;
+}

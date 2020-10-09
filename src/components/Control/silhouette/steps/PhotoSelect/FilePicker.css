@@ -1,0 +1,16 @@
+.dropzone {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 4px dashed #ccc;
+}
+
+.dragActive {
+  background: #eee;
+}
+
+.disabled {
+  opacity: 0.5;
+}

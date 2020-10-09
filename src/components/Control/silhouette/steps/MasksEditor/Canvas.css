@@ -1,0 +1,17 @@
+.stage {
+  color: rgba(127, 127, 127, .7);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  border: 3px dashed rgba(127, 127, 127, .7)
+}
+
+.stage span {
+  white-space: nowrap;
+}
+
+.svg {
+  left: 0;
+  top: 0;
+  position: absolute;
+}
