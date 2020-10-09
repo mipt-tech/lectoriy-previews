@@ -18,7 +18,6 @@ const desiredWidth = emWidth * fontSize
 export default async function waitUntilFontLoaded() {
   return new Promise(resolve => {
     const interval = setInterval(() => {
-      console.log(sampleText.offsetWidth)
       if (Math.abs((sampleText.offsetWidth - desiredWidth) / desiredWidth) < epsilon) {
         resolve()
         clearInterval(interval)

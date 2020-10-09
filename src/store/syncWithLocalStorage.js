@@ -3,8 +3,7 @@ import { stateKeys } from './reducers'
 
 const PREFIX = 'previews__'
 
-export const saveToLocalStorage = store => (next, initialState) => action => {
-  console.log(initialState)
+export const saveToLocalStorage = store => next => action => {
   const prevState = store.getState()
   next(action)
   const curState = store.getState()
@@ -16,7 +15,7 @@ export const saveToLocalStorage = store => (next, initialState) => action => {
       switch (key) {
         case 'photo':
         case 'silhouette':
-          valueToSave = curValue.src
+          valueToSave = curValue?.src
           break
         case 'masks':
         case 'transformation':
@@ -50,7 +49,9 @@ export const loadFromLocalStorage = async () => {
         break
       case 'photo':
       case 'silhouette':
-        persistedState[key] = await loadImage(persistedValue)
+        if (persistedValue != 'undefined' && persistedValue != 'null') {
+          persistedState[key] = await loadImage(persistedValue)
+        }
         break
       case 'masks':
       case 'transformation':

@@ -6,7 +6,7 @@ import styles from './Preview.css'
 
 const w = settings.outputWidth
 
-const ThumbnailsSprite = () => (
+const Preview = () => (
   <div className={styles.thumbnails}>
     <Thumbnail scale={640 / w} />
     <div style={{ display: 'flex', alignItems: 'start' }}>
@@ -16,4 +16,4 @@ const ThumbnailsSprite = () => (
   </div>
 )
 
-export default React.memo(ThumbnailsSprite)
+export default React.memo(Preview)
