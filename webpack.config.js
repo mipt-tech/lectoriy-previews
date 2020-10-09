@@ -7,7 +7,7 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   entry: ['./main.js'],
   output: {
-    path: path.join(__dirname, 'www'),
+    path: path.join(__dirname, 'public'),
     filename: '[name].[hash].js'
   },
   plugins: [
