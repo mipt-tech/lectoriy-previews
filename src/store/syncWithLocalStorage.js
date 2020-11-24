@@ -40,8 +40,10 @@ export const loadFromLocalStorage = async () => {
       case 'year':
       case 'subject_size':
       case 'topic_size':
-      case 'number':
         persistedState[key] = parseInt(persistedValue)
+        break
+      case 'number':
+        persistedState[key] = persistedValue == '' ? '' : parseInt(persistedValue)
         break
       case 'additional_scale':
       case 'additional_x':

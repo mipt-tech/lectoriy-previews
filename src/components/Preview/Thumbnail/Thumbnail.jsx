@@ -35,8 +35,8 @@ const Thumbnail = ({ scale, className }) => {
   const [aside_transition, setAsideTransition] = useState(null)
 
   useEffect(() => {
-    const aside_transition_src = year < 4 ? asideTransitionDark : asideTransitionBright
-    loadImage(aside_transition_src).then(setAsideTransition)
+    const asideTransitionSrc = year < 4 ? asideTransitionDark : asideTransitionBright
+    loadImage(asideTransitionSrc).then(setAsideTransition)
   }, [year])
 
   const {
