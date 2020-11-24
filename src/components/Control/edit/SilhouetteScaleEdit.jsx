@@ -16,7 +16,9 @@ const SilhouetteScaleEdit = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="caption">Размер</Typography>
+        <Typography variant="caption" color="textSecondary">
+          Размер
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <Slider value={scale} onChange={onChange} min={1} step={0.01} max={2} />

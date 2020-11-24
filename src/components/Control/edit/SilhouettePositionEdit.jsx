@@ -16,7 +16,9 @@ const SilhouettePositionEdit = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="caption">Горизонтальное положение</Typography>
+        <Typography variant="caption" color="textSecondary">
+          Горизонтальное положение
+        </Typography>
       </Grid>
       <Grid item xs={12}>
         <Slider value={x + 1} onChange={onChange} min={0} step={0.01} max={1} track={false} />

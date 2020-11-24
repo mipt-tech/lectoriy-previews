@@ -14,12 +14,10 @@ import Season from './Season'
 import Lecturer from './Lecturer'
 import Silhouette from './Silhouette'
 
-import styles from './Thumbnail.css'
-
 const width = settings.outputWidth
 const height = settings.outputHeight
 
-const Thumbnail = ({ scale }) => {
+const Thumbnail = ({ scale, className }) => {
   const number = useSelector(state => (state.number == '' ? '' : '#') + state.number)
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
@@ -65,7 +63,7 @@ const Thumbnail = ({ scale }) => {
       height={height * scale}
       scaleX={scale}
       scaleY={scale}
-      className={styles.thumbnail}
+      className={className}
     >
       <Layer>
         {silhouette && <Silhouette image={silhouette} year={year} {...silhouetteTransformation} />}

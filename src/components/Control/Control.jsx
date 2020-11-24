@@ -16,7 +16,7 @@ import SilhouettePositionEdit from './edit/SilhouettePositionEdit'
 import styles from './Control.css'
 
 const Block = props => {
-  return <Grid style={{ marginBottom: 10 }} container spacing={2} {...props} />
+  return <Grid className={styles.block} container spacing={2} {...props} />
 }
 
 const Control = () => {

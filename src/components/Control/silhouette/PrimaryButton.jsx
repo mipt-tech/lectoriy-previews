@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Button } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
 import Dialog from './Dialog'
+
+import styles from './PrimaryButton.css'
 
 const PrimaryButton = () => {
   const hasAnything = useSelector(state => state.photo != null)
@@ -9,22 +13,23 @@ const PrimaryButton = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
 
   return (
-    <div>
+    <FormControl>
+      <FormHelperText className={styles.caption}>Фотка лектора</FormHelperText>
       {hasSilhouette ? (
         <Button variant="outlined" color="primary" onClick={() => setDialogOpen(true)}>
-          Редактировать фотку препода
+          Редактировать
         </Button>
       ) : hasAnything ? (
         <Button variant="contained" onClick={() => setDialogOpen(true)}>
-          Доделать фотку препода
+          Доделать
         </Button>
       ) : (
         <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-          Добавить фотку препода
+          Добавить
         </Button>
       )}
       <Dialog isOpen={dialogOpen} close={() => setDialogOpen(false)} />
-    </div>
+    </FormControl>
   )
 }
 

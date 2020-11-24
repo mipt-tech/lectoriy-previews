@@ -2,3 +2,32 @@
   margin-left: 20px;
   width: 300px;
 }
+
+.block {
+  margin-bottom: 20px;
+}
+
+.compactSlider {
+  padding: 6px 0;
+}
+
+.cellWithSlider {
+  line-height: 0;
+}
+
+.cellWithSliderCaption {
+  display: flex;
+  align-items: center;
+}
+
+.sliderCaption {
+  line-height: 0;
+}
+
+.yearCaption {
+  margin-bottom: 5px;
+}
+
+.yearRadio {
+  padding: 0 9px;
+}

@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import settings from '../../../util/settings'
 
+import styles from '../Control.css'
+
 const TopicSizeEdit = () => {
   const topic_size = useSelector(state => state.topic_size)
   const dispatch = useDispatch()
@@ -16,7 +18,7 @@ const TopicSizeEdit = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={4}>
+      <Grid item xs={4} className={styles.cellWithSlider}>
         <Slider
           value={topic_size}
           onChange={onChange}
@@ -25,10 +27,13 @@ const TopicSizeEdit = () => {
           step={null}
           marks={settings.topicSizes.map(value => ({ value }))}
           valueLabelDisplay="auto"
+          className={styles.compactSlider}
         />
       </Grid>
-      <Grid item xs={8}>
-        <Typography variant="caption">Кегль темы занятия</Typography>
+      <Grid item xs={8} className={styles.cellWithSliderCaption}>
+        <Typography variant="caption" color="textSecondary" className={styles.sliderCaption}>
+          Размер
+        </Typography>
       </Grid>
     </Grid>
   )
