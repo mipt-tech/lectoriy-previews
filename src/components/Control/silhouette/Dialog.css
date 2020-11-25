@@ -6,3 +6,7 @@
   padding-top: 20px;
   min-width: 500px;
 }
+
+.stepButton:hover {
+  opacity: 0.8;
+}

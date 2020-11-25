@@ -66,8 +66,12 @@ const Dialog = ({ isOpen, close }) => {
         <Stepper nonLinear className={styles.stepper}>
           {steps.map(([key, label]) => (
             <Step key={key} disabled={!allowed[key]} active={key == stepKey}>
-              <StepButton onClick={() => setStepKey(key)} completed={completed[key]}>
-                {label}
+              <StepButton
+                onClick={() => setStepKey(key)}
+                completed={completed[key]}
+                className={styles.stepButton}
+              >
+                <span style={{ color: key == stepKey ? '#3f51b5' : undefined }}>{label}</span>
               </StepButton>
             </Step>
           ))}
