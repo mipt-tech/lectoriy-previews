@@ -30,7 +30,7 @@ const PhotoSelect = ({ confirmBeforeClear }) => {
     setError(null)
     setLoading(true)
     try {
-      const src = typeof file == 'string' ? file : await readFile(file)
+      const src = await readFile(file)
       const newImage = await loadImage(src)
       dispatch(setPhoto(newImage))
       setLoading(false)

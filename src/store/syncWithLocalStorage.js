@@ -52,7 +52,11 @@ export const loadFromLocalStorage = async () => {
       case 'photo':
       case 'silhouette':
         if (persistedValue != 'undefined' && persistedValue != 'null') {
-          persistedState[key] = await loadImage(persistedValue)
+          try {
+            persistedState[key] = await loadImage(persistedValue)
+          } catch (e) {
+            persistedState[key] = null
+          }
         }
         break
       case 'masks':
