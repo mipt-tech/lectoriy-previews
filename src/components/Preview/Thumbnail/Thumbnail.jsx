@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Stage, Layer, Rect, Image } from 'react-konva'
+import { ReImg } from 'reimg'
 import { loadImage } from '../../../util/img'
 import { calculateLayout } from './layout'
 import settings from '../../../util/settings'
@@ -13,11 +14,14 @@ import Topic from './Topic'
 import Season from './Season'
 import Lecturer from './Lecturer'
 import Silhouette from './Silhouette'
+import { useRef } from 'react'
 
 const width = settings.outputWidth
 const height = settings.outputHeight
 
-const Thumbnail = ({ scale, className }) => {
+const Thumbnail = ({ scale, className, downloadOnMount, onDownloadReady }) => {
+  scale = scale || 1
+
   const number = useSelector(state => (state.number == '' ? '' : '#') + state.number)
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
@@ -32,12 +36,22 @@ const Thumbnail = ({ scale, className }) => {
   const season = useSelector(state => state.season)
   const additionalX = useSelector(state => state.additional_x)
 
-  const [aside_transition, setAsideTransition] = useState(null)
+  const [asideTransition, setAsideTransition] = useState(null)
+  const thumbnailReady = asideTransition != null
 
   useEffect(() => {
     const asideTransitionSrc = year < 4 ? asideTransitionDark : asideTransitionBright
     loadImage(asideTransitionSrc).then(setAsideTransition)
   }, [year])
+
+  const canvasRef = useRef()
+  useEffect(() => {
+    if (downloadOnMount && thumbnailReady) {
+      const fileName = `${subject.replace(/\n/g, ' ')} ${number}.png`
+      ReImg.fromCanvas(canvasRef.current).downloadPng(fileName)
+      if (onDownloadReady) onDownloadReady()
+    }
+  }, [thumbnailReady])
 
   const {
     subjectCoords,
@@ -64,6 +78,7 @@ const Thumbnail = ({ scale, className }) => {
       scaleX={scale}
       scaleY={scale}
       className={className}
+      ref={canvasRef}
     >
       <Layer>
         {silhouette && <Silhouette image={silhouette} year={year} {...silhouetteTransformation} />}
@@ -73,7 +88,7 @@ const Thumbnail = ({ scale, className }) => {
           height={height}
           globalCompositeOperation="destination-over"
         />
-        {aside_transition && <Image image={aside_transition} />}
+        {asideTransition && <Image image={asideTransition} />}
         <Subject text={subject} year={year} size={subjectSize} {...subjectCoords} />
         <Number text={number} year={year} {...numberCoords} />
         <Topic text={topic} year={year} size={topicSize} {...topicProps} />

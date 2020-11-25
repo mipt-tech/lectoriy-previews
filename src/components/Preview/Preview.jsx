@@ -4,6 +4,7 @@ import Thumbnail from './Thumbnail/Thumbnail'
 import settings from '../../util/settings'
 
 import styles from './Preview.css'
+import DownloadButton from './DownloadButton'
 
 const w = settings.outputWidth
 
@@ -27,6 +28,9 @@ const Preview = () => (
     <div className={styles.secondLine}>
       <ThumbnailIRL width={210} caption="На странице канала" />
       <ThumbnailIRL width={100} caption="В плейлисте" />
+      <div className={styles.downloadButtonContainer}>
+        <DownloadButton />
+      </div>
     </div>
   </div>
 )
