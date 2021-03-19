@@ -3,6 +3,7 @@ import { getTextRects } from './textDim'
 import settings from '../../../util/settings'
 import { inscribe, complete, transformRect } from '../../../util/rect'
 import { transform, compose } from '../../../util/transform'
+import Seminar from './Seminar'
 
 const fontFace = settings.fontFace
 const thumbnailWidth = settings.outputWidth
@@ -32,7 +33,7 @@ function oneAboveAnother(rect1, rect2) {
 function getTopicCoords(topRects, topicRects) {
   const leftest = topicRects.reduce((acc, cur) => Math.min(acc, cur.left), Infinity)
   const fontSize = topicRects[0].height
-  const adjustment = -fontSize * 0.2
+  const adjustment = -fontSize * 0.3
   if (topRects.length > 0) {
     let d1 = 0
     topRects.forEach(topRect => {
@@ -115,6 +116,7 @@ export function calculateLayout(
   subject,
   subjectSize,
   number,
+  seminar,
   topic,
   topicSize,
   silhouette,
@@ -134,6 +136,17 @@ export function calculateLayout(
   if (number != '') {
     topRects.push(numberRect)
   }
+  let seminarRect
+  if (seminar) {
+    const adjustment = -18
+    seminarRect = complete({
+      top: numberRect.bottom + vSpacing,
+      right: thumbnailWidth - hSpacing + adjustment,
+      width: Seminar.width,
+      height: Seminar.height,
+    })
+    topRects.push(seminarRect)
+  }
   const topicRects = getTopicRects(topic, topicSize)
 
   const lecturerY = thumbnailHeight - vSpacing - settings.seasonSize
@@ -151,6 +164,9 @@ export function calculateLayout(
       x: hSpacing,
       y: lecturerY,
     },
+  }
+  if (seminar) {
+    layout.seminarCoords = { x: seminarRect.left, y: seminarRect.top }
   }
   if (silhouette) {
     const imgTransform = getSilhouetteTransform(

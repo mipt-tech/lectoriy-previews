@@ -14,6 +14,7 @@ import SilhouetePrimaryButton from './silhouette/PrimaryButton'
 import SilhouettePositionEdit from './edit/SilhouettePositionEdit'
 
 import styles from './Control.css'
+import SeminarEdit from './edit/SeminarEdit'
 
 const Block = props => {
   return <Grid className={styles.block} container spacing={2} {...props} />
@@ -37,6 +38,9 @@ const Control = () => {
         </Grid>
         <Grid item xs={12}>
           <SubjectSizeEdit />
+        </Grid>
+        <Grid item xs={12}>
+          <SeminarEdit />
         </Grid>
       </Block>
       <Block>

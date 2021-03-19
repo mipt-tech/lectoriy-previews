@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Stage, Layer, Rect, Image } from 'react-konva'
 import { ReImg } from 'reimg'
@@ -14,7 +14,7 @@ import Topic from './Topic'
 import Season from './Season'
 import Lecturer from './Lecturer'
 import Silhouette from './Silhouette'
-import { useRef } from 'react'
+import Seminar from './Seminar'
 
 const width = settings.outputWidth
 const height = settings.outputHeight
@@ -23,6 +23,7 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
   const number = useSelector(state => (state.number == '' ? '' : '#') + state.number)
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
+  const seminar = useSelector(state => state.seminar)
   const year = useSelector(state => state.year)
   const silhouette = useSelector(state => state.silhouette)
   const masks = useSelector(state => state.masks)
@@ -54,6 +55,7 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
   const {
     subjectCoords,
     numberCoords,
+    seminarCoords,
     topicCoords,
     seasonCoords,
     lecturerCoords,
@@ -62,6 +64,7 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
     subject,
     subjectSize,
     number,
+    seminar,
     topic,
     topicSize,
     silhouette,
@@ -94,6 +97,7 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
         <Topic text={topic} year={year} size={topicSize} {...topicCoords} />
         <Season text={season} year={year} {...seasonCoords} />
         <Lecturer text={lecturer} year={year} {...lecturerCoords} />
+        {seminar && <Seminar year={year} {...seminarCoords} />}
       </Layer>
     </Stage>
   )

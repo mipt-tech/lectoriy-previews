@@ -22,6 +22,9 @@ export const saveToLocalStorage = store => next => action => {
         case 'filters':
           valueToSave = JSON.stringify(curValue)
           break
+        case 'seminar':
+          valueToSave = ~~curValue // boolean -> int
+          break
         default:
           valueToSave = curValue
       }
@@ -63,6 +66,9 @@ export const loadFromLocalStorage = async () => {
       case 'transformation':
       case 'filters':
         persistedState[key] = JSON.parse(persistedValue)
+        break
+      case 'seminar':
+        persistedState[key] = !!parseInt(persistedValue) // string -> int -> boolean
         break
       default:
         persistedState[key] = persistedValue

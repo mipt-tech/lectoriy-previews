@@ -3,6 +3,7 @@ const defaultState = {
   subject_text: 'Кратные интегралы',
   subject_size: 120,
   number: 1,
+  seminar: false,
   topic_text: 'Дивергенция\nРотор',
   topic_size: 90,
   lecturer: 'Иванов Г. Е.',

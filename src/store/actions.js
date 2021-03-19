@@ -22,6 +22,12 @@ export const setNumber = number => ({
   value: number,
 })
 
+export const setSeminar = seminar => ({
+  type: 'SET_KEY_VALUE',
+  key: 'seminar',
+  value: seminar,
+})
+
 export const setTopic = topic_text => ({
   type: 'SET_KEY_VALUE',
   key: 'topic_text',
