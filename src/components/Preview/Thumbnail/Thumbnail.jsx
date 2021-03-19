@@ -19,9 +19,7 @@ import { useRef } from 'react'
 const width = settings.outputWidth
 const height = settings.outputHeight
 
-const Thumbnail = ({ scale, className, downloadOnMount, onDownloadReady }) => {
-  scale = scale || 1
-
+const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady }) => {
   const number = useSelector(state => (state.number == '' ? '' : '#') + state.number)
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
@@ -46,17 +44,17 @@ const Thumbnail = ({ scale, className, downloadOnMount, onDownloadReady }) => {
 
   const canvasRef = useRef()
   useEffect(() => {
-    if (downloadOnMount && thumbnailReady) {
+    if (downloadWhenMounted && thumbnailReady) {
       const fileName = `${subject.replace(/\n/g, ' ')} ${number}.png`
       ReImg.fromCanvas(canvasRef.current).downloadPng(fileName)
-      if (onDownloadReady) onDownloadReady()
+      onDownloadReady?.()
     }
   }, [thumbnailReady])
 
   const {
     subjectCoords,
     numberCoords,
-    topicProps,
+    topicCoords,
     seasonCoords,
     lecturerCoords,
     silhouetteTransformation,
@@ -64,6 +62,8 @@ const Thumbnail = ({ scale, className, downloadOnMount, onDownloadReady }) => {
     subject,
     subjectSize,
     number,
+    topic,
+    topicSize,
     silhouette,
     masks,
     transformation,
@@ -91,7 +91,7 @@ const Thumbnail = ({ scale, className, downloadOnMount, onDownloadReady }) => {
         {asideTransition && <Image image={asideTransition} />}
         <Subject text={subject} year={year} size={subjectSize} {...subjectCoords} />
         <Number text={number} year={year} {...numberCoords} />
-        <Topic text={topic} year={year} size={topicSize} {...topicProps} />
+        <Topic text={topic} year={year} size={topicSize} {...topicCoords} />
         <Season text={season} year={year} {...seasonCoords} />
         <Lecturer text={lecturer} year={year} {...lecturerCoords} />
       </Layer>

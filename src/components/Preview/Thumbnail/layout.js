@@ -1,37 +1,56 @@
-import { getTextDim } from './textDim'
+import last from 'just-last'
+import { getTextRects } from './textDim'
 import settings from '../../../util/settings'
-import { inscribe, toBounding, transformRect } from '../../../util/rect'
+import { inscribe, complete, transformRect } from '../../../util/rect'
 import { transform, compose } from '../../../util/transform'
 
 const fontFace = settings.fontFace
 const thumbnailWidth = settings.outputWidth
 const thumbnailHeight = settings.outputHeight
 const vSpacing = 50 // vertical spacing
-const hSpacing = 70 // horizontal spacing
+const hSpacing = 60 // horizontal spacing
 
-function getSubjectRect(subject, size) {
-  const { width, height } = getTextDim(subject, fontFace, size)
-  return { width, height, left: hSpacing, top: vSpacing }
+function getSubjectRects(subject, size) {
+  const rects = getTextRects(subject, fontFace, size, 'left')
+  return rects.map(rect => transformRect(rect, { translation: { x: hSpacing, y: vSpacing } }))
 }
 
 function getNumberRect(number) {
-  const { width, height } = getTextDim(number, fontFace, settings.numberSize)
-  return { width, height, left: thumbnailWidth - hSpacing - width, top: vSpacing }
+  const [{ width, height }] = getTextRects(number, fontFace, settings.numberSize)
+  return complete({ width, height, right: thumbnailWidth - hSpacing, top: vSpacing })
 }
 
-function getTopicLayoutProps(subjectRect, numberRect) {
-  const topBound = Math.max(toBounding(subjectRect).bottom, toBounding(numberRect).bottom)
-  const bottomBound = settings.logoMarginTop
-  const leftBound = hSpacing * 2
-  const rightBound = settings.outputWidth - hSpacing
+function getTopicRects(topic, size) {
+  const rects = getTextRects(topic, fontFace, size, 'right', 1.2)
+  return rects.map(rect => transformRect(rect, { translation: { x: thumbnailWidth - hSpacing } }))
+}
 
+function oneAboveAnother(rect1, rect2) {
+  return rect1.left <= rect2.right && rect2.left <= rect1.right
+}
+
+function getTopicCoords(topRects, topicRects) {
+  const leftest = topicRects.reduce((acc, cur) => Math.min(acc, cur.left), Infinity)
+  const fontSize = topicRects[0].height
+  const adjustment = -fontSize * 0.2
+  if (topRects.length > 0) {
+    let d1 = 0
+    topRects.forEach(topRect => {
+      topicRects.forEach(topicRect => {
+        if (oneAboveAnother(topRect, topicRect)) {
+          d1 = Math.min(d1, topicRect.top - topRect.bottom)
+        }
+      })
+    })
+    const d2 = settings.logoMarginTop - last(topicRects).bottom
+    return {
+      x: leftest,
+      y: (d1 + d2) / 2 - d1 + adjustment,
+    }
+  }
   return {
-    width: rightBound - leftBound,
-    x: leftBound,
-    y: topBound,
-    height: bottomBound - topBound,
-    align: 'right',
-    verticalAlign: 'middle',
+    x: leftest,
+    y: vSpacing,
   }
 }
 
@@ -75,12 +94,11 @@ function getSilhouetteRightBound(ys, img, masks, imgTransform, masksTransform) {
   return result
 }
 
-function getSilhouetteTransform(subjectRect, image, userScale, userHorizontalPosition) {
-  const subjectBounds = toBounding(subjectRect)
+function getSilhouetteTransform(topBound, image, userScale, userHorizontalPosition) {
   const imageRect = { left: 0, top: 0, width: image.width, height: image.height }
   const boundingRect = {
     left: 0,
-    top: subjectBounds.bottom + vSpacing,
+    top: topBound + vSpacing,
     right: thumbnailWidth,
     bottom: thumbnailHeight,
   }
@@ -97,22 +115,34 @@ export function calculateLayout(
   subject,
   subjectSize,
   number,
+  topic,
+  topicSize,
   silhouette,
   masks,
   transformation,
   additionalScale,
   additionalX
 ) {
-  const subjectRect = getSubjectRect(subject, subjectSize)
+  const subjectRects = getSubjectRects(subject, subjectSize)
+  const subjectFirstLineRect = subjectRects[0]
+  const subjectLastLineRect = last(subjectRects)
   const numberRect = getNumberRect(number)
+  const topRects = []
+  if (subject != '') {
+    topRects.push(...subjectRects)
+  }
+  if (number != '') {
+    topRects.push(numberRect)
+  }
+  const topicRects = getTopicRects(topic, topicSize)
 
   const lecturerY = thumbnailHeight - vSpacing - settings.seasonSize
   const seasonY = lecturerY - settings.seasonSize * settings.lineHeight
 
   const layout = {
-    subjectCoords: { x: subjectRect.left, y: subjectRect.top },
+    subjectCoords: { x: subjectFirstLineRect.left, y: subjectFirstLineRect.top },
     numberCoords: { x: numberRect.left, y: numberRect.top },
-    topicProps: getTopicLayoutProps(subjectRect, numberRect),
+    topicCoords: getTopicCoords(topRects, topicRects),
     seasonCoords: {
       x: hSpacing,
       y: seasonY,
@@ -124,7 +154,7 @@ export function calculateLayout(
   }
   if (silhouette) {
     const imgTransform = getSilhouetteTransform(
-      subjectRect,
+      subjectLastLineRect.bottom,
       silhouette,
       additionalScale,
       additionalX

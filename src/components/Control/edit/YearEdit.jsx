@@ -9,7 +9,7 @@ import { setYear } from '../../../store/actions'
 
 import styles from '../Control.css'
 
-const years = [1, 2, 3, 4 /*, 'Внеучебный курс'*/]
+const years = [1, 2, 3, 4, 'Внеучебный курс']
 
 const YearEdit = () => {
   const year = useSelector(state => state.year)

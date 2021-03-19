@@ -9,7 +9,7 @@ const DownloadButton = () => {
     <>
       {active && (
         <div style={{ display: 'none' }}>
-          <Thumbnail downloadOnMount={true} onDownloadReady={() => setActive(false)} />
+          <Thumbnail downloadWhenMounted={true} onDownloadReady={() => setActive(false)} />
         </div>
       )}
       <Button

@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Stage, Layer, Image, Rect } from 'react-konva'
+import { Stage, Layer, Image } from 'react-konva'
 import Konva from 'konva'
+import { SilhouetteUnderlay, SilhouetteOverlay } from '../../../../Preview/Thumbnail/Silhouette'
 import settings from '../../../../../util/settings'
 import { inscribe } from '../../../../../util/rect'
 
@@ -24,7 +25,8 @@ const Demo = ({ chaplin, posterization, brightness, contrast }) => {
     }
   }, [posterization, brightness, contrast, chaplin])
 
-  const { inscribedRect } = inscribe(chaplin, rectToInscribeIn)
+  const chaplinRect = { left: 0, right: 0, width: chaplin.width, height: chaplin.height }
+  const { inscribedRect } = inscribe(chaplinRect, rectToInscribeIn)
   const width = inscribedRect.width
   const height = inscribedRect.height
   const background = settings.backgroundColor[year]
@@ -33,6 +35,7 @@ const Demo = ({ chaplin, posterization, brightness, contrast }) => {
     <div className={styles.canvasWrapper} style={{ background }}>
       <Stage width={width} height={height}>
         <Layer>
+          <SilhouetteUnderlay year={year} dim={{ width, height }} />
           <Image
             image={chaplin}
             width={width}
@@ -40,12 +43,7 @@ const Demo = ({ chaplin, posterization, brightness, contrast }) => {
             ref={ref}
             filters={[Konva.Filters.Brighten, Konva.Filters.Contrast, Konva.Filters.Posterize]}
           />
-          <Rect
-            fill={settings.silhouetteColor[year]}
-            width={width}
-            height={height}
-            globalCompositeOperation={year < 4 ? 'screen' : 'overlay'}
-          />
+          <SilhouetteOverlay year={year} dim={{ width, height }} />
         </Layer>
       </Stage>
     </div>

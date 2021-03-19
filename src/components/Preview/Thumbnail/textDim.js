@@ -1,9 +1,21 @@
-const helperCanvas = document.createElement('canvas')
-helperCanvas.style.display = 'none'
+import { complete } from '../../../util/rect'
 
-export function getTextDim(text, fontFace, size, lineHeight = 1) {
+const helperCanvas = document.createElement('canvas')
+
+export function getTextRects(text, fontFace, size, align, lineHeight = 1) {
   const ctx = helperCanvas.getContext('2d')
   ctx.font = size + 'px ' + fontFace
-  const { width } = ctx.measureText(text)
-  return { width, height: size * lineHeight * text.split('\n').length }
+  const rects = text.split('\n').map((line, index) => ({
+    width: ctx.measureText(line).width,
+    height: size * 0.8,
+    top: index * size * lineHeight,
+  }))
+  rects.forEach(rect => {
+    if (align === 'right') {
+      rect.right = 0
+    } else {
+      rect.left = 0
+    }
+  })
+  return rects.map(complete)
 }
