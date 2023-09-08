@@ -8,7 +8,6 @@ import styles from '../Control.css'
 
 const SeminarEdit = () => {
   const seminar = useSelector(state => state.seminar)
-  console.log(seminar)
   const dispatch = useDispatch()
 
   function onChange(e) {

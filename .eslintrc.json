@@ -23,7 +23,8 @@
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
         "react/prop-types": "off",
-        "prettier/prettier": ["error"]
+        "prettier/prettier": "error",
+        "no-console": "error"
     },
     "settings": {
         "react": {
