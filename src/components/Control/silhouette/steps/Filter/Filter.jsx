@@ -15,6 +15,10 @@ import {
 import styles from './Filter.css'
 
 const Filter = ({ onReadyStateChange }) => {
+  /**
+   * "Chaplin" is intermediate state of lecturer photo transformation.
+   * It is cached and used for faster preview of the final lecturer silhouette.
+   */
   const [chaplin, setChaplin] = useState(null)
   const photo = useSelector(state => state.photo)
   const masks = useSelector(state => state.masks)

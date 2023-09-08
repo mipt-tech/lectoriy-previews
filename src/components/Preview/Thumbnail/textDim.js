@@ -2,6 +2,9 @@ import { complete } from '../../../util/rect'
 
 const helperCanvas = document.createElement('canvas')
 
+/**
+ * @returns Geometric properties of bounding boxes for each line in a text
+ */
 export function getTextRects(text, fontFace, size, align, lineHeight = 1) {
   const ctx = helperCanvas.getContext('2d')
   ctx.font = size + 'px ' + fontFace

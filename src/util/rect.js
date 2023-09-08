@@ -1,9 +1,11 @@
-// SizedRect: { left, top, width, height }
-// BoundingRect: { left, top, right, bottom }
-// CompleteRect: { left, top, right, bottom, width, height }, where right = left + width, bottom = top + height
+/**
+ * A rectangle can be specified using either { left, top, width, height } or { left, top, right, bottom }.
+ * We call these representations "incomplete".
+ * "Complete" representation contains all 6 properties.
+ */
 
-export function complete(initial) {
-  const rect = { ...initial }
+export function complete(incompleteRect) {
+  const rect = { ...incompleteRect }
   if (rect.left == null) {
     rect.left = rect.right - rect.width
   }
@@ -25,8 +27,7 @@ export function complete(initial) {
   return rect
 }
 
-export function getRect(img, masks) {
-  // Не совсем корректно: маски могут быть инвертированы
+export function getSilhouetteBoundingRect(img, masks) {
   const points = masks.map(mask => mask.polyline).flat()
   const xs = points.map(point => point[0])
   const ys = points.map(point => point[1])
@@ -39,16 +40,22 @@ export function getRect(img, masks) {
 }
 
 export function transformRect(rect, { translation: { x = 0, y = 0 }, scale = 1 }) {
-  const sizedRect = complete(rect)
-  const newSizedRect = {
-    width: sizedRect.width * scale,
-    height: sizedRect.height * scale,
-    left: sizedRect.left * scale + x,
-    top: sizedRect.top * scale + y,
+  const completeRect = complete(rect)
+  const resultingRect = {
+    width: completeRect.width * scale,
+    height: completeRect.height * scale,
+    left: completeRect.left * scale + x,
+    top: completeRect.top * scale + y,
   }
-  return complete(newSizedRect)
+  return complete(resultingRect)
 }
 
+/**
+ * @returns An object of 2 properties:
+ * - `transformation` Transformation to apply to `innerRect` so that it fits in `outerRect`
+ *   and is aligned to the top-left corner;
+ * - `inscribedRect` The transformed `innerRect`.
+ */
 export function inscribe(innerRect, outerRect) {
   const { width: outerWidth, height: outerHeight } = complete(outerRect)
   const { width: innerWidth, height: innerHeight } = complete(innerRect)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 function computeViewerDim() {
-  return [Math.max(960, innerWidth - 200), innerHeight - 200]
+  return [innerWidth - 200, innerHeight - 200]
 }
 
 export default function useWindowSize() {
