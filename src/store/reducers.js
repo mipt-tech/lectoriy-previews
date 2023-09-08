@@ -5,7 +5,7 @@ const defaultState = {
   number: 1,
   seminar: false,
   topic_text: 'Дивергенция\nРотор',
-  topic_size: 90,
+  topic_size: 150,
   lecturer: 'Иванов Г. Е.',
   season: 'Осень 2020',
   photo: null,
