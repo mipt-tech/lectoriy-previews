@@ -6,5 +6,3 @@ import waitUntilFontLoaded from './util/waitForFont'
 waitUntilFontLoaded().then(() => {
   ReactDOM.render(React.createElement(App), document.querySelector('#mount'))
 })
-
-console.log('test')
