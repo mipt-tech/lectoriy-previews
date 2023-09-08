@@ -5,6 +5,7 @@ pages:
   stage: deploy
   script:
     - npm install
+    - npx eslint --ext .jsx,.js src
     - npm run build
   artifacts:
     paths:
