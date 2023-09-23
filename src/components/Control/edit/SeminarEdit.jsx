@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setSeminar } from '../../../store/actions'
 import Checkbox from '@material-ui/core/Checkbox'
-import { FormControlLabel } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import styles from '../Control.css'
 

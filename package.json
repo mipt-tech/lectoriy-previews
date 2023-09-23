@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack -p",
-    "start": "webpack-dev-server --hot --port 3000"
+    "start": "webpack-dev-server --hot --port 3000",
+    "report": "webpack --profile --json > stats.json; webpack-bundle-analyzer ./stats.json"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.1",
@@ -43,6 +44,7 @@
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-bundle-analyzer": "^4.8.0"
   }
 }
