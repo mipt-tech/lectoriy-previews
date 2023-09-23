@@ -60,11 +60,14 @@ function currentSeason() {
   const now = new Date()
   const month = now.getMonth()
   const year = now.getFullYear()
-  if (month === 0) { // January
+  if (month === 0) {
+    // January
     return `Осень ${year - 1}`
-  } else if (month <= 7) { // February...August
+  } else if (month <= 7) {
+    // February...August
     return `Весна ${year}`
-  } else { // September...December
+  } else {
+    // September...December
     return `Осень ${year}`
   }
 }
