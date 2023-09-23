@@ -7,7 +7,7 @@ const defaultState = {
   topic_text: 'Дивергенция\nРотор',
   topic_size: 150,
   lecturer: 'Иванов Г. Е.',
-  season: 'Осень 2020',
+  season: currentSeason(),
   photo: null,
   masks: null,
   filters: {
@@ -53,5 +53,18 @@ export default function reducer(state = defaultState, action) {
       }
     default:
       return state
+  }
+}
+
+function currentSeason() {
+  const now = new Date()
+  const month = now.getMonth()
+  const year = now.getFullYear()
+  if (month === 0) { // January
+    return `Осень ${year - 1}`
+  } else if (month <= 7) { // February...August
+    return `Весна ${year}`
+  } else { // September...December
+    return `Осень ${year}`
   }
 }
