@@ -108,3 +108,8 @@ export const setAdditionalX = value => ({
   key: 'additional_x',
   value,
 })
+
+export const loadPersistedState = payload => ({
+  type: 'LOAD_PERSISTED_STATE',
+  payload,
+})

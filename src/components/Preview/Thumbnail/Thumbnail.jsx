@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { loadPersistedState } from '../../../store/actions'
 import { Stage, Layer, Rect, Image } from 'react-konva'
 import { ReImg } from 'reimg'
 import { loadImage } from '../../../util/img'
@@ -7,6 +8,9 @@ import { calculateLayout } from './layout'
 import settings from '../../../util/settings'
 import asideTransitionDark from '../../../../assets/shadow.png'
 import asideTransitionBright from '../../../../assets/bright.png'
+import { downloadStateJSON } from '../../../util/exportState'
+import { importStateFromFile } from '../../../util/importState'
+import { THUMB_ACTION } from '../../../constants'
 
 import Subject from './Subject'
 import Number from './Number'
@@ -19,7 +23,13 @@ import Seminar from './Seminar'
 const width = settings.outputWidth
 const height = settings.outputHeight
 
-const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady }) => {
+const Thumbnail = ({
+  scale = 1,
+  className,
+  downloadWhenMounted,
+  onDownloadReady,
+  actionOnMount,
+}) => {
   const number = useSelector(state => (state.number == '' ? '' : '#') + state.number)
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
@@ -35,6 +45,9 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
   const season = useSelector(state => state.season)
   const additionalX = useSelector(state => state.additional_x)
 
+  const fullState = useSelector(state => state)
+  const dispatch = useDispatch()
+
   const [asideTransition, setAsideTransition] = useState(null)
   const thumbnailReady = asideTransition != null
 
@@ -44,13 +57,75 @@ const Thumbnail = ({ scale = 1, className, downloadWhenMounted, onDownloadReady 
   }, [year])
 
   const canvasRef = useRef()
+  const ranRef = useRef(false) // одноразовый предохранитель
+
   useEffect(() => {
-    if (downloadWhenMounted && thumbnailReady) {
-      const fileName = `${subject.replace(/\n/g, ' ')} ${number}.png`
-      ReImg.fromCanvas(canvasRef.current).downloadPng(fileName)
+    if (!(downloadWhenMounted || actionOnMount) || !thumbnailReady) return
+    if (ranRef.current) return
+    ranRef.current = true
+    const fileName = `${subject.replace(/\n/g, ' ')} ${number}`
+    const stage = canvasRef.current
+
+    if (actionOnMount === THUMB_ACTION.EXPORT_IMAGE) {
+      ReImg.fromCanvas(stage).downloadPng(fileName + '.png')
       onDownloadReady?.()
+      return
     }
-  }, [thumbnailReady])
+
+    if (actionOnMount === THUMB_ACTION.EXPORT_STATE) {
+      try {
+        downloadStateJSON(fullState, fileName + '.json')
+      } finally {
+        onDownloadReady?.()
+      }
+      return
+    }
+
+    if (actionOnMount === THUMB_ACTION.IMPORT_STATE) {
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = 'application/json,.json'
+      input.style.display = 'none'
+
+      let finished = false
+      const finalize = () => {
+        if (finished) return
+        finished = true
+        onDownloadReady?.()
+        // убрать временный input и слушатель
+        setTimeout(() => input.remove(), 0)
+        window.removeEventListener('focus', onWindowFocus, true)
+      }
+
+      const onWindowFocus = () => {
+        // Возвращаемся из диалога выбора файла.
+        // Если change НЕ пришёл — пользователь отменил; отпускаем кнопку.
+        setTimeout(() => {
+          if (!finished) finalize()
+        }, 0)
+      }
+
+      input.onchange = async e => {
+        try {
+          const file = e.target.files?.[0]
+          if (file) {
+            const imported = await importStateFromFile(file)
+            dispatch(loadPersistedState(imported))
+          }
+        } catch (err) {
+          alert(`Импорт не удался: ${err?.message || err}`)
+        } finally {
+          finalize() // всегда разблокируем
+        }
+      }
+
+      document.body.appendChild(input)
+      window.addEventListener('focus', onWindowFocus, true) // ловим «Отмена»
+      input.click() // открываем диалог
+
+      return
+    }
+  }, [thumbnailReady, downloadWhenMounted, actionOnMount])
 
   const {
     subjectCoords,

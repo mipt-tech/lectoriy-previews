@@ -40,7 +40,9 @@
   display: block;
 }
 
-.downloadButtonContainer {
-  flex: 1;
-  text-align: right;
+.buttonsColumn {
+  display: flex;
+  flex-direction: column; /* в столбец */
+  gap: 1em;               /* «пустая строка» между кнопками */
+  align-self: flex-start; /* чтобы не растягивалось по высоте */
 }
