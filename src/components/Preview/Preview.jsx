@@ -14,7 +14,7 @@ const ThumbnailIRL = ({ width, caption }) => (
   <div className={styles.withCaption}>
     <div className={styles.withDuration}>
       <Thumbnail scale={width / w} />
-      <div className={styles.duration}>
+      <div className={width <= 100 ? styles.durationSmall : styles.duration}>
         <Typography className={styles.durationText}>1:19:48</Typography>
       </div>
     </div>

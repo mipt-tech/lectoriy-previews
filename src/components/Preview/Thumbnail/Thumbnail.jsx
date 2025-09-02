@@ -154,8 +154,8 @@ const Thumbnail = ({
 
   return (
     <Stage
-      width={width * scale}
-      height={height * scale}
+      width={Math.round(width * scale)}
+      height={Math.round(height * scale)}
       scaleX={scale}
       scaleY={scale}
       className={className}
