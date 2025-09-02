@@ -21,7 +21,7 @@ const SilhouetteScaleEdit = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Slider value={scale} onChange={onChange} min={1} step={0.01} max={2} />
+        <Slider value={scale} onChange={onChange} min={0.5} step={0.01} max={2} />
       </Grid>
     </Grid>
   )

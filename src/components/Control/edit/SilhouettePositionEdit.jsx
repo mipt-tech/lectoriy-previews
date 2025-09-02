@@ -21,7 +21,7 @@ const SilhouettePositionEdit = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Slider value={x + 1} onChange={onChange} min={0} step={0.01} max={1} track={false} />
+        <Slider value={x + 1} onChange={onChange} min={0} step={0.01} max={2} track={false} />
       </Grid>
     </Grid>
   )

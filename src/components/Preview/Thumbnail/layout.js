@@ -77,7 +77,7 @@ function projection(p, q, y) {
 
 function getSilhouetteRightBound(ys, img, masks, imgTransform, masksTransform) {
   let result = 0
-  const imgRect = { left: 0, top: 0, width: img.width, height: img.width }
+  const imgRect = { left: 0, top: 0, width: img.width, height: img.height }
   const imgRight = transformRect(imgRect, imgTransform).right
   masksTransform = compose(masksTransform, imgTransform)
   for (let i in masks) {
