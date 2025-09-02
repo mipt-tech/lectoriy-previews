@@ -117,6 +117,7 @@ export function calculateLayout(
   subjectSize,
   number,
   seminar,
+  seminarText,
   topic,
   topicSize,
   silhouette,
@@ -126,8 +127,8 @@ export function calculateLayout(
   additionalX
 ) {
   const subjectRects = getSubjectRects(subject, subjectSize)
-  const subjectFirstLineRect = subjectRects[0]
-  const subjectLastLineRect = last(subjectRects)
+  const subjectFirstLineRect = subjectRects.length > 0 ? subjectRects[0] : { left: 0, top: 0 }
+  const subjectLastLineRect = subjectRects.length > 0 ? last(subjectRects) : { bottom: 0 }
   const numberRect = getNumberRect(number)
   const topRects = []
   if (subject != '') {
@@ -136,18 +137,26 @@ export function calculateLayout(
   if (number != '') {
     topRects.push(numberRect)
   }
-  let seminarRect
+  let seminarCoords = null
+  let seminarWidth = 0
   if (seminar) {
+    const textWidth = seminarText ? getTextRects(seminarText, fontFace, 70)[0].width : 0
+    seminarWidth = textWidth + 12 * 2 // то же значение, что и в Seminar.jsx
+
     const adjustment = -18
-    seminarRect = complete({
+    const seminarRect = complete({
       top: numberRect.bottom + vSpacing,
       right: thumbnailWidth - hSpacing + adjustment,
-      width: Seminar.width,
+      width: seminarWidth,
       height: Seminar.height,
     })
+
+    seminarCoords = { x: seminarRect.left, y: seminarRect.top }
     topRects.push(seminarRect)
   }
+
   const topicRects = getTopicRects(topic, topicSize)
+  const topicCoords = getTopicCoords(topRects, topicRects)
 
   const lecturerY = thumbnailHeight - vSpacing - settings.seasonSize
   const seasonY = lecturerY - settings.seasonSize * settings.lineHeight
@@ -155,7 +164,7 @@ export function calculateLayout(
   const layout = {
     subjectCoords: { x: subjectFirstLineRect.left, y: subjectFirstLineRect.top },
     numberCoords: { x: numberRect.left, y: numberRect.top },
-    topicCoords: getTopicCoords(topRects, topicRects),
+    topicCoords: topicCoords,
     seasonCoords: {
       x: hSpacing,
       y: seasonY,
@@ -164,10 +173,10 @@ export function calculateLayout(
       x: hSpacing,
       y: lecturerY,
     },
+    seminarCoords: seminarCoords,
+    seminarWidth: seminarWidth,
   }
-  if (seminar) {
-    layout.seminarCoords = { x: seminarRect.left, y: seminarRect.top }
-  }
+
   if (silhouette) {
     const imgTransform = getSilhouetteTransform(
       subjectLastLineRect.bottom,

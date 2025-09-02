@@ -28,6 +28,12 @@ export const setSeminar = seminar => ({
   value: seminar,
 })
 
+export const setSeminarText = text => ({
+  type: 'SET_KEY_VALUE',
+  key: 'seminar_text',
+  value: text,
+})
+
 export const setTopic = topic_text => ({
   type: 'SET_KEY_VALUE',
   key: 'topic_text',

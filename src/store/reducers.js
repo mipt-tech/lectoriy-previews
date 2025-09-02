@@ -4,6 +4,7 @@ const defaultState = {
   subject_size: 120,
   number: 10,
   seminar: false,
+  seminar_text: 'семинар',
   topic_text: 'Дивергенция\nРотор',
   topic_size: 150,
   lecturer: 'Иванов Г. Е.',

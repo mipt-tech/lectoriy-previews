@@ -34,6 +34,7 @@ const Thumbnail = ({
   const subject = useSelector(state => state.subject_text)
   const subjectSize = useSelector(state => state.subject_size)
   const seminar = useSelector(state => state.seminar)
+  const seminarText = useSelector(state => state.seminar_text)
   const year = useSelector(state => state.year)
   const silhouette = useSelector(state => state.silhouette)
   const masks = useSelector(state => state.masks)
@@ -131,6 +132,7 @@ const Thumbnail = ({
     subjectCoords,
     numberCoords,
     seminarCoords,
+    seminarWidth,
     topicCoords,
     seasonCoords,
     lecturerCoords,
@@ -140,6 +142,7 @@ const Thumbnail = ({
     subjectSize,
     number,
     seminar,
+    seminarText,
     topic,
     topicSize,
     silhouette,
@@ -172,7 +175,9 @@ const Thumbnail = ({
         <Topic text={topic} year={year} size={topicSize} {...topicCoords} />
         <Season text={season} year={year} {...seasonCoords} />
         <Lecturer text={lecturer} year={year} {...lecturerCoords} />
-        {seminar && <Seminar year={year} {...seminarCoords} />}
+        {seminar && (
+          <Seminar year={year} text={seminarText} width={seminarWidth} {...seminarCoords} />
+        )}
       </Layer>
     </Stage>
   )
