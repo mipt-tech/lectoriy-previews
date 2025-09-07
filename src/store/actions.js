@@ -28,6 +28,12 @@ export const setSeminar = seminar => ({
   value: seminar,
 })
 
+export const setSeminarText = text => ({
+  type: 'SET_KEY_VALUE',
+  key: 'seminar_text',
+  value: text,
+})
+
 export const setTopic = topic_text => ({
   type: 'SET_KEY_VALUE',
   key: 'topic_text',
@@ -107,4 +113,9 @@ export const setAdditionalX = value => ({
   type: 'SET_KEY_VALUE',
   key: 'additional_x',
   value,
+})
+
+export const loadPersistedState = payload => ({
+  type: 'LOAD_PERSISTED_STATE',
+  payload,
 })

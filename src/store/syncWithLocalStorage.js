@@ -1,5 +1,6 @@
 import { loadImage } from '../util/img'
 import { stateKeys } from './reducers'
+import eventBus from '../util/eventBus'
 
 const PREFIX = 'previews__'
 
@@ -28,7 +29,21 @@ export const saveToLocalStorage = store => next => action => {
         default:
           valueToSave = curValue
       }
-      localStorage[`${PREFIX}${key}`] = valueToSave
+      try {
+        localStorage[`${PREFIX}${key}`] = valueToSave
+      } catch (e) {
+        if (e.name === 'QuotaExceededError') {
+          eventBus.dispatch('show-notification', {
+            message: 'Фото слишком большое и не будет сохранено для следующей сессии',
+            severity: 'warning',
+          })
+        } else {
+          eventBus.dispatch('show-notification', {
+            message: `Произошла ошибка: ${e?.message || String(e)}. Обратитесь к администратору`,
+            severity: 'error',
+          })
+        }
+      }
     }
   }
 }
