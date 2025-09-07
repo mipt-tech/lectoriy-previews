@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { loadPersistedState } from '../../../store/actions'
 import { Stage, Layer, Rect, Image } from 'react-konva'
-import { ReImg } from 'reimg'
 import { loadImage } from '../../../util/img'
 import { calculateLayout } from './layout'
 import settings from '../../../util/settings'
@@ -23,6 +22,15 @@ import Seminar from './Seminar'
 
 const width = settings.outputWidth
 const height = settings.outputHeight
+
+function downloadURI(uri, name) {
+  const link = document.createElement('a')
+  link.download = name
+  link.href = uri
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 
 const Thumbnail = ({
   scale = 1,
@@ -69,7 +77,8 @@ const Thumbnail = ({
     const stage = canvasRef.current
 
     if (actionOnMount === THUMB_ACTION.EXPORT_IMAGE) {
-      ReImg.fromCanvas(stage).downloadPng(fileName + '.png')
+      const dataURL = stage.toDataURL({ pixelRatio: 2 })
+      downloadURI(dataURL, fileName + '.png')
       onDownloadReady?.()
       return
     }
