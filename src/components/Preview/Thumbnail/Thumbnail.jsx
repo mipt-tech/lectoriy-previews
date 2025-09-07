@@ -11,6 +11,7 @@ import asideTransitionBright from '../../../../assets/bright.png'
 import { downloadStateJSON } from '../../../util/exportState'
 import { importStateFromFile } from '../../../util/importState'
 import { THUMB_ACTION } from '../../../constants'
+import eventBus from '../../../util/eventBus'
 
 import Subject from './Subject'
 import Number from './Number'
@@ -114,7 +115,14 @@ const Thumbnail = ({
             dispatch(loadPersistedState(imported))
           }
         } catch (err) {
-          alert(`Импорт не удался: ${err?.message || err}`)
+          if (err.name === 'QuotaExceededError') {
+            eventBus.dispatch('show-notification', {
+              message: 'Фото слишком большое и не будет сохранено для следующей сессии',
+              severity: 'warning',
+            })
+          } else {
+            alert(`Импорт не удался: ${err?.message || err}`)
+          }
         } finally {
           finalize() // всегда разблокируем
         }
