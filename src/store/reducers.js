@@ -2,8 +2,9 @@ const defaultState = {
   year: 1,
   subject_text: 'Кратные интегралы',
   subject_size: 120,
-  number: 1,
+  number: 10,
   seminar: false,
+  seminar_text: 'семинар',
   topic_text: 'Дивергенция\nРотор',
   topic_size: 150,
   lecturer: 'Иванов Г. Е.',
@@ -51,6 +52,8 @@ export default function reducer(state = defaultState, action) {
           [action.filter]: action.value,
         },
       }
+    case 'LOAD_PERSISTED_STATE':
+      return { ...state, ...action.payload } // мягкий merge (не перезатирает пустотой)
     default:
       return state
   }

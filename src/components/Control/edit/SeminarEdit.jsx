@@ -16,7 +16,7 @@ const SeminarEdit = () => {
 
   return (
     <FormControlLabel
-      label="Семинар"
+      label="Плашка"
       checked={seminar}
       onChange={onChange}
       control={<Checkbox color="primary" className={styles.yearRadio} />}

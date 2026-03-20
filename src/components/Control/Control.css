@@ -35,3 +35,10 @@
 .yearExtra {
   margin-top: 5px;
 }
+
+.infoIcon {
+  color: rgba(0, 0, 0, 0.35);
+  cursor: help;
+  font-size: 1rem;
+  margin-top: 2px;
+}
